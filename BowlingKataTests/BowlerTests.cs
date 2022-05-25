@@ -1,16 +1,22 @@
+using FluentAssertions;
+using BowlingKata;
+
 namespace BowlingKataTests
 {
     public class BowlerTests
     {
+        private Bowler bowler;
         [SetUp]
         public void Setup()
-        {
+        { 
+            bowler = new Bowler();
         }
 
         [Test]
-        public void Test1()
+        public void Should_Return_300_Given_12_Strikes()
         {
-            Assert.Pass();
+            string scores = "X X X X X X X X X X X X ";
+            bowler.GetTotalScore(scores).Should().Be(300);
         }
     }
 }

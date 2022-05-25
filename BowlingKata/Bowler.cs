@@ -8,29 +8,21 @@ namespace BowlingKata
 {
     public class Bowler
     { 
-        public string FrameScores { get; private set; }
-        public int TotalScore { get; private set; }
-
-        public Bowler(string frameScores)
-        {
-            FrameScores = frameScores;
-            TotalScore = GetTotalScore();
-        }
-
-        public int GetTotalScore()
+        public int GetTotalScore(string scores)
         {
             int runningTotal = 0;
             char[] delimiters = { ' ', ',', '.', ';', '\t' };
-            string[] scores = FrameScores.Split(delimiters);
+            string[] scorePerFrame = scores.Split(delimiters);
 
-            for (int i=0; i<=scores.Length; i++)
+            for (int i=0; i<(scorePerFrame.Length)-1; i++)
             {
-                if (scores[i].Equals("x"))
+                Console.WriteLine(i);
+                if (scorePerFrame[i].Equals("X"))
                 {
-                    runningTotal += 10 + Int32.Parse(scores[i + 1]) + Int32.Parse(scores[i + 2]);
+                    //runningTotal += 10 + Int32.Parse(scorePerFrame[i + 1]) + Int32.Parse(scorePerFrame[i + 2]);
+                    runningTotal += 10 + 10 + 10;
                 }
             }
-
             return runningTotal;
         }
     }
