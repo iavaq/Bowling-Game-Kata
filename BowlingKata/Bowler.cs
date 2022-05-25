@@ -13,15 +13,60 @@ namespace BowlingKata
             int runningTotal = 0;
             char[] delimiters = { ' ', ',', '.', ';', '\t' };
             string[] scorePerFrame = scores.Split(delimiters);
+            int frame = 0;
+            bool strike = false;
+            bool spare = false;
+            int score = 0;
+
 
             for (int i=0; i<(scorePerFrame.Length)-1; i++)
             {
-                Console.WriteLine(i);
-                if (scorePerFrame[i].Equals("X"))
-                {
-                    //runningTotal += 10 + Int32.Parse(scorePerFrame[i + 1]) + Int32.Parse(scorePerFrame[i + 2]);
-                    runningTotal += 10 + 10 + 10;
+                Console.WriteLine(frame);
+                Console.WriteLine(scorePerFrame[i]);
+                frame = 0;
+                foreach (char c in scorePerFrame[i])
+                { 
+                    if (strike)
+                    {
+                        //if strike, count frameScore twice
+                        frame = 2 * score;
+                        strike = false;
+                    }
+
+                    switch (c)
+                    {
+                        case 'X':
+                            {
+                                strike = true;
+                                score = 10;
+                                break;
+                            }
+                        case '/':
+                            {
+                                spare = true;
+                                score = 10;
+                                break;
+                            }
+                        case '-':
+                            {
+                                score += 0;
+                                break;
+                            }
+                        default:
+                            {
+                                score += (int)Char.GetNumericValue(c);
+                                break;
+                            }
+                    }
+                    if (spare)
+                    {
+                        frame += score;
+                        spare = false;
+                    }
+
+                    frame += score;
                 }
+                runningTotal += frame;
             }
             return runningTotal;
         }
