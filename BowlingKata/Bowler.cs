@@ -26,13 +26,7 @@ namespace BowlingKata
                 frame = 0;
                 foreach (char c in scorePerFrame[i])
                 { 
-                    if (strike)
-                    {
-                        //if strike, count frameScore twice
-                        frame = 2 * score;
-                        strike = false;
-                    }
-
+                    score = 0;
                     switch (c)
                     {
                         case 'X':
@@ -49,12 +43,12 @@ namespace BowlingKata
                             }
                         case '-':
                             {
-                                score += 0;
+                                score = 0;
                                 break;
                             }
                         default:
                             {
-                                score += (int)Char.GetNumericValue(c);
+                                score = (int)Char.GetNumericValue(c);
                                 break;
                             }
                     }
@@ -65,6 +59,12 @@ namespace BowlingKata
                     }
 
                     frame += score;
+                }
+                if (strike)
+                {
+                    //if strike, count frameScore twice
+                    frame += frame ;
+                    strike = false;
                 }
                 runningTotal += frame;
             }
