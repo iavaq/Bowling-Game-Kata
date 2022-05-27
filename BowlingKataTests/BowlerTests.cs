@@ -15,7 +15,7 @@ namespace BowlingKataTests
         [Test]
         public void Should_Return_300_Given_12_Strikes()
         {
-            string scores = "X X X X X X X X X X X X ";
+            string scores = "X X X X X X X X X X X X";
             bowler.GetTotalScore(scores).Should().Be(300);
         }
 
