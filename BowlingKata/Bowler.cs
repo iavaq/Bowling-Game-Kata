@@ -12,16 +12,17 @@ namespace BowlingKata
         {
             int runningTotal = 0;
             char[] delimiters = { ' ', ',', '.', ';', '\t' };
-            string[] scorePerFrame = (scores+" ").Split(delimiters);
+            //List<string> result = s?.Split(',').ToList()
+            List<string> scorePerFrame = (scores+" ").Split(delimiters).ToList();
             int frame = 0;
-            int strike = 0;
+            //int strike = 0;
             int spare = 0;
             int score = 0;
+            int nextFrame=0;
 
-
-            for (int i=0; i<(scorePerFrame.Length)-1; i++)
+            for (int i=0; i<(scorePerFrame.Count)-1; i++)
             {
-
+                
                 frame = 0;
                 foreach (char c in scorePerFrame[i])
                 {
@@ -30,8 +31,10 @@ namespace BowlingKata
                     {
                         case 'X':
                             {
-                                strike = 2;
                                 score = 10;
+                                if (nextFrame.Equals(i))
+                                    goto StrikeAgain;
+                                nextFrame = i + 1;
                                 break;  
                             }
                         case '/':
@@ -44,7 +47,7 @@ namespace BowlingKata
                                else
                                 {
                                     frame = 10;
-                                    if (strike > 0)
+                                    if (nextFrame > i)
                                         score = 10;
                                 }
                                 break;
@@ -69,13 +72,17 @@ namespace BowlingKata
 
                     frame += score;
                 }
-                
-                if (strike>0 & (i > 0 & i <= 9))
+
+                StrikeAgain:
+                if ((nextFrame.Equals(i)) & (i > 0 & i <= 9))
                 {
-                    //Console.WriteLine(strike);
-                    frame += strike * score  ;
-                    strike = 0;
+                    //if strike, next frame is worth twice
+                    frame += 2 * frame;
+                    nextFrame = i;
                 }
+
+
+
                 Console.WriteLine(frame);
                 runningTotal += frame;
             }
