@@ -14,7 +14,7 @@ namespace BowlingKata
             char[] delimiters = { ' ', ',', '.', ';', '\t' };
             string[] scorePerFrame = (scores+" ").Split(delimiters);
             int frame = 0;
-            bool strike = false;
+            int strike = 0;
             int spare = 0;
             int score = 0;
 
@@ -30,14 +30,9 @@ namespace BowlingKata
                     {
                         case 'X':
                             {
-                                strike = true;
+                                strike = 2;
                                 score = 10;
-                                if (spare > 0)
-                                {
-                                    frame = 10;
-                                    strike = false;
-                                }
-                                break;
+                                break;  
                             }
                         case '/':
                             {
@@ -46,10 +41,10 @@ namespace BowlingKata
                                     spare = 10 - score;
                                     score = spare;
                                 }
-                                else
+                               else
                                 {
                                     frame = 10;
-                                    if (strike)
+                                    if (strike > 0)
                                         score = 10;
                                 }
                                 break;
@@ -62,23 +57,25 @@ namespace BowlingKata
                         default:
                             {
                                 score = (int)Char.GetNumericValue(c);
-                                if (spare > 0 & i <= 9)
-                                {
-                                    frame += score;
-                                    spare = 0;
-                                }
+                                
+                                    if (spare > 0 & i <= 9)
+                                    {
+                                        frame += score;
+                                        spare = 0;
+                                    }
                                 break;
                             }
                     }
 
                     frame += score;
                 }
-                if (strike & (i > 0 & i <= 9))
+                
+                if (strike>0 & (i > 0 & i <= 9))
                 {
-                    frame = 2 * score + frame;
-                    strike = false;
+                    //Console.WriteLine(strike);
+                    frame += strike * score  ;
+                    strike = 0;
                 }
-                Console.WriteLine(strike);
                 Console.WriteLine(frame);
                 runningTotal += frame;
             }
