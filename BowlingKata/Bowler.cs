@@ -12,44 +12,47 @@ namespace BowlingKata
         {
             int runningTotal = 0;
             char[] delimiters = { ' ', ',', '.', ';', '\t' };
-            //List<string> result = s?.Split(',').ToList()
-            List<string> scorePerFrame = (scores+" ").Split(delimiters).ToList();
+            List<string> frames = (scores+" ").Split(delimiters).ToList();
             int frame = 0;
-            //int strike = 0;
+            bool strike = false;
             int spare = 0;
             int score = 0;
-            int nextFrame=0;
+            List<int> strikeFrames = new List<int>{ };
 
-            for (int i=0; i<(scorePerFrame.Count)-1; i++)
+            for (int i=0; i<(frames.Count)-1; i++)
             {
-                
                 frame = 0;
-                foreach (char c in scorePerFrame[i])
+                strike = false;
+                foreach (char c in frames[i])
                 {
-                    //score = 0;
                     switch (c)
                     {
                         case 'X':
                             {
-                                score = 10;
-                                if (nextFrame.Equals(i))
-                                    goto StrikeAgain;
-                                nextFrame = i + 1;
+                                strike = true;
+                                if (i < 9)
+                                    strikeFrames.Add(i + 1);
+                                
+                                if (spare > 0)
+                                {
+                                    //strike is worth twice, if spare before
+                                    score = 20;
+                                    spare = 0;
+                                }
+                                else
+                                    score = 10;
                                 break;  
                             }
                         case '/':
                             {
-                                if (i < 9)
+                                if (i <= 9)
                                 {
                                     spare = 10 - score;
                                     score = spare;
                                 }
                                else
-                                {
-                                    frame = 10;
-                                    if (nextFrame > i)
-                                        score = 10;
-                                }
+                                   frame = 10;
+                                
                                 break;
                             }
                         case '-':
@@ -60,30 +63,28 @@ namespace BowlingKata
                         default:
                             {
                                 score = (int)Char.GetNumericValue(c);
-                                
-                                    if (spare > 0 & i <= 9)
-                                    {
-                                        frame += score;
-                                        spare = 0;
-                                    }
+                                if (spare > 0 & i <= 9)
+                                {
+                                    frame += score;
+                                    spare = 0;
+                                }
                                 break;
                             }
                     }
-
                     frame += score;
                 }
-
-                StrikeAgain:
-                if ((nextFrame.Equals(i)) & (i > 0 & i <= 9))
+                if (strikeFrames.Any())
                 {
                     //if strike, next frame is worth twice
-                    frame += 2 * frame;
-                    nextFrame = i;
+                    if (strikeFrames[0]==i)
+                    {
+                        frame = 2 * frame;
+                        if (strike)
+                            frame += 10;
+
+                        strikeFrames.RemoveAt(0);
+                    }
                 }
-
-
-
-                Console.WriteLine(frame);
                 runningTotal += frame;
             }
             return runningTotal;

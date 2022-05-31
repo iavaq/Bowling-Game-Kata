@@ -29,7 +29,7 @@ namespace BowlingKataTests
         [Test]
         public void Should_Return_150()
         {
-            string scores = "5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5";
+            string scores = "5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5";
             bowler.GetTotalScore(scores).Should().Be(150);
         }
 
@@ -50,7 +50,7 @@ namespace BowlingKataTests
         [Test]
         public void Should_Return_187()
         {
-            string scores = "X 9/ 5/1 72 X X X 9- 8/ 9/ X";
+            string scores = "X 9/ 5/ 72 X X X 9- 8/ 9/ X";
             bowler.GetTotalScore(scores).Should().Be(187);
         }
 
